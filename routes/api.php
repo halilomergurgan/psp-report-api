@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\v3\AuthController;
+use App\Http\Controllers\API\v3\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,6 @@ Route::prefix('v3')->group(function () {
 
     Route::middleware('jwt')->group(function () {
         Route::get('merchant/user/me', [AuthController::class, 'me']);
+        Route::post('transactions/report', [TransactionController::class, 'report']);
     });
 });

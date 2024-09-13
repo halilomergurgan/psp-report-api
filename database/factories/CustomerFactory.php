@@ -18,10 +18,12 @@ class CustomerFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    public function definition()
     {
+        $transaction = Transaction::factory()->create();
+
         return [
-            'transaction_id' => Transaction::inRandomOrder()->first()->transaction_id,
+            'transaction_id' => $transaction->transaction_id,
             'number' => $this->faker->creditCardNumber,
             'expiry_month' => $this->faker->month,
             'expiry_year' => $this->faker->year,

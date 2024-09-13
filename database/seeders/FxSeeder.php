@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Fx;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FxSeeder extends Seeder
@@ -13,6 +12,6 @@ class FxSeeder extends Seeder
      */
     public function run(): void
     {
-        Fx::factory(20)->create();
+        Fx::factory(50)->create();
     }
 }
