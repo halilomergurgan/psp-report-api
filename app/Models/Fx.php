@@ -11,6 +11,8 @@ class Fx extends Model
 {
     use HasFactory;
 
+    protected $table = 'fx';
+
     protected $fillable = [
         'merchant_id', 'original_amount', 'original_currency'
     ];
