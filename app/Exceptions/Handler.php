@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Enums\StatusEnum;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,5 +29,15 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof UnauthorizedHttpException) {
+            return response()->json([
+                'error' => 'Token has expired.',
+                'status' => StatusEnum::DECLINED
+            ], 401);
+        }
     }
 }

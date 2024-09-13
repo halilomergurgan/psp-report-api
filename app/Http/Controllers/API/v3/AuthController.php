@@ -3,14 +3,21 @@
 namespace App\Http\Controllers\API\v3;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Enums\StatusEnum;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ValidationException
+     */
+    public function login(Request $request): JsonResponse
     {
         $this->validate($request, [
             'email' => 'required|email',
@@ -32,7 +39,10 @@ class AuthController extends Controller
         ]);
     }
 
-    public function me()
+    /**
+     * @return JsonResponse
+     */
+    public function me(): JsonResponse
     {
         return response()->json(auth()->user());
     }
