@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v3;
 
 use App\Enums\StatusEnum;
+use App\Filters\TransactionFilter;
 use App\Http\Controllers\Controller;
 use App\Services\TransactionService;
 use Illuminate\Http\JsonResponse;
@@ -50,7 +51,7 @@ class TransactionController extends Controller
     public function transactionList(Request $request): JsonResponse
     {
         try {
-            $filters = $request->all();
+            $filters = new TransactionFilter($request);
 
             $transactions = $this->transactionService->getTransactionList($filters);
 

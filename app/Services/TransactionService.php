@@ -18,8 +18,8 @@ class TransactionService
         return $this->transactionRepository->getTransactionsForReport($merchantId, $acquirerId, $fromDate, $toDate);
     }
 
-    public function getTransactionList($filters, $fromDate = null, $toDate = null)
+    public function getTransactionList($filters)
     {
-        return $this->transactionRepository->getTransactionList($filters, $fromDate, $toDate);
+        return $this->transactionRepository->getTransactionList($filters);
     }
 }

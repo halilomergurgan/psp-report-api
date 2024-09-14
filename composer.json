@@ -10,6 +10,7 @@
         "babenkoivan/elastic-scout-driver": "^4.0",
         "babenkoivan/elastic-scout-driver-plus": "^5.0",
         "guzzlehttp/guzzle": "^7.2",
+        "jerome/filterable": "^1.1",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/scout": "^10.11",
