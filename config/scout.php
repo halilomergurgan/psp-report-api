@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('SCOUT_DRIVER', 'elasticsearch'),
+    'driver' => env('SCOUT_DRIVER', 'elastic'),
 
     /*
     |--------------------------------------------------------------------------
