@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->uuid('transaction_id');
             $table->string('number');
             $table->integer('expiry_month');
             $table->integer('expiry_year');
@@ -32,9 +31,6 @@ return new class extends Migration
             $table->string('shipping_country')->nullable();
             $table->timestamps();
 
-            $table->foreign('transaction_id')->references('transaction_id')->on('transactions')->onDelete('cascade');
-
-            $table->index('transaction_id');
             $table->index('email');
 
         });

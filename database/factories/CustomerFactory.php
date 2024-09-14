@@ -20,10 +20,7 @@ class CustomerFactory extends Factory
      */
     public function definition()
     {
-        $transaction = Transaction::factory()->create();
-
         return [
-            'transaction_id' => $transaction->transaction_id,
             'number' => $this->faker->creditCardNumber,
             'expiry_month' => $this->faker->month,
             'expiry_year' => $this->faker->year,

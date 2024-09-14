@@ -23,17 +23,20 @@ return new class extends Migration
             $table->unsignedBigInteger('acquirer_id')->nullable();
             $table->unsignedBigInteger('fx_id')->nullable();
             $table->unsignedBigInteger('agent_id')->nullable();
+            $table->unsignedBigInteger('customer_id')->nullable();
             $table->timestamps();
 
             $table->foreign('merchant_id')->references('id')->on('merchants');
             $table->foreign('acquirer_id')->references('id')->on('acquirers');
             $table->foreign('fx_id')->references('id')->on('fx');
             $table->foreign('agent_id')->references('id')->on('agents');
+            $table->foreign('customer_id')->references('id')->on('customers');
 
             $table->index('merchant_id');
             $table->index('acquirer_id');
             $table->index('fx_id');
             $table->index('agent_id');
+            $table->index('customer_id');
 
         });
     }
