@@ -21,7 +21,7 @@ Route::prefix('v3')->group(function () {
 
     Route::middleware('jwt')->group(function () {
         Route::get('merchant/user/me', [AuthController::class, 'me']);
-        Route::post('transactions/report', [TransactionController::class, 'report']);
+        Route::post('transactions/report', [TransactionController::class, 'transactionReport']);
         Route::post('transactions/list', [TransactionController::class, 'transactionList']);
     });
 });

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interface\TransactionRepositoryInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TransactionService
 {
@@ -13,12 +14,20 @@ class TransactionService
         $this->transactionRepository = $transactionRepository;
     }
 
-    public function getTransactionsForReport($merchantId, $acquirerId, $fromDate, $toDate)
+    /**
+     * @param $filters
+     * @return array
+     */
+    public function transactionReport($filters): array
     {
-        return $this->transactionRepository->getTransactionsForReport($merchantId, $acquirerId, $fromDate, $toDate);
+        return $this->transactionRepository->transactionReport($filters);
     }
 
-    public function getTransactionList($filters)
+    /**
+     * @param $filters
+     * @return LengthAwarePaginator
+     */
+    public function getTransactionList($filters): LengthAwarePaginator
     {
         return $this->transactionRepository->getTransactionList($filters);
     }

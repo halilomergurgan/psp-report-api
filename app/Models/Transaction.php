@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Elastic\ScoutDriverPlus\Searchable;
 use Filterable\Traits\Filterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Support\Str;
 
 class Transaction extends Model
 {
-    use HasFactory, Filterable;
+    use HasFactory, Filterable, Searchable;
 
     protected $primaryKey = 'transaction_id';
     public $incrementing = false;
@@ -70,5 +71,17 @@ class Transaction extends Model
                 $model->transaction_id = (string) Str::uuid();
             }
         });
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'transaction_id' => $this->transaction_id,
+            'merchant_id' => $this->merchant_id,
+            'acquirer_id' => $this->acquirer_id,
+            'fx.original_amount' => $this->fx->original_amount,
+            'fx.original_currency' => $this->fx->original_currency,
+            'created_at' => $this->created_at->toAtomString(),
+        ];
     }
 }

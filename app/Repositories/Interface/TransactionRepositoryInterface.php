@@ -2,9 +2,19 @@
 
 namespace App\Repositories\Interface;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 interface TransactionRepositoryInterface
 {
-    public function getTransactionsForReport($merchantId, $acquirerId, $fromDate, $toDate);
+    /**
+     * @param $filters
+     * @return array
+     */
+    public function transactionReport($filters): array;
 
-    public function getTransactionList($filters);
+    /**
+     * @param $filters
+     * @return LengthAwarePaginator
+     */
+    public function getTransactionList($filters): LengthAwarePaginator;
 }

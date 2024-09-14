@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v3;
 use App\Enums\StatusEnum;
 use App\Filters\TransactionFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TransactionReportRequest;
 use App\Services\TransactionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,29 +20,16 @@ class TransactionController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param TransactionReportRequest $request
      * @return JsonResponse
      */
-    public function report(Request $request): JsonResponse
+    public function transactionReport(TransactionReportRequest $request): JsonResponse
     {
-        try {
-            $transactions = $this->transactionService->getTransactionsForReport(
-                $request->merchant,
-                $request->acquirer,
-                $request->fromDate,
-                $request->toDate
-            );
+        $filters = $request->validated();
 
-            return response()->json([
-                'status' => StatusEnum::APPROVED,
-                'response' => $transactions
-            ]);
-        } catch (\Throwable $throwable) {
-            return response()->json([
-                'status' => StatusEnum::ERROR,
-                'message' => $throwable->getMessage()
-            ]);
-        }
+        $transactions = $this->transactionService->transactionReport($filters);
+
+        return response()->json(['status' => StatusEnum::APPROVED, 'response' => $transactions]);
     }
 
     /**
@@ -50,20 +38,13 @@ class TransactionController extends Controller
      */
     public function transactionList(Request $request): JsonResponse
     {
-        try {
-            $filters = new TransactionFilter($request);
+        $filters = new TransactionFilter($request);
 
-            $transactions = $this->transactionService->getTransactionList($filters);
+        $transactions = $this->transactionService->getTransactionList($filters);
 
-            return response()->json([
-                'status' => StatusEnum::APPROVED,
-                'data' => $transactions
-            ]);
-        } catch (\Throwable $throwable) {
-            return response()->json([
-                'status' => StatusEnum::ERROR,
-                'message' => $throwable->getMessage()
-            ]);
-        }
+        return response()->json([
+            'status' => StatusEnum::APPROVED,
+            'data' => $transactions
+        ]);
     }
 }

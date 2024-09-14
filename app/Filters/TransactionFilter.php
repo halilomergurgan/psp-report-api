@@ -81,26 +81,30 @@ class TransactionFilter extends Filter
      */
     public function filterField($value): Builder
     {
+        $filterValue = request()->input('filterVal') ?? null;
+
         return match ($value) {
-            'Transaction UUID' => $this->builder->where('transactions.transaction_id', request()->input('filterValue')),
-            'Customer Email' => $this->builder->whereHas('customer', function ($query) {
-                $query->where('email', request()->input('filterValue'));
+            'Transaction UUID' => $this->builder->where('transactions.transaction_id', $filterValue),
+            'Customer Email' => $this->builder->whereHas('customer', function ($query) use ($filterValue) {
+                $query->where('email', $filterValue);
             }),
-            'Reference No' => $this->builder->where('transactions.reference_no', request()->input('filterValue')),
-            'Custom Data' => $this->builder->where('transactions.custom_data', 'like', '%' . request()->input('filterValue') . '%'),
-            'Card PAN' => $this->builder->whereHas('customer', function ($query) {
-                $query->where('number', 'like', '%' . request()->input('filterValue') . '%');
+            'Reference No' => $this->builder->where('transactions.reference_no', $filterValue),
+            'Custom Data' => $this->builder->where('transactions.custom_data', 'like', '%' . $filterValue . '%'),
+            'Card PAN' => $this->builder->whereHas('customer', function ($query) use ($filterValue) {
+                $query->where('number', 'like', '%' . $filterValue . '%');
             }),
-            'Merchant Name' => $this->builder->whereHas('merchant', function ($query) {
-                $query->where('name', 'like', '%' . request()->input('filterValue') . '%');
+            'Merchant Name' => $this->builder->whereHas('merchant', function ($query) use ($filterValue) {
+                $query->where('name', 'like', '%' . $filterValue . '%');
             }),
-            'Acquirer Code' => $this->builder->whereHas('acquirer', function ($query) {
-                $query->where('code', request()->input('filterValue'));
+            'Acquirer Code' => $this->builder->whereHas('acquirer', function ($query) use ($filterValue) {
+                $query->where('code', $filterValue);
             }),
-            'FX Currency' => $this->builder->whereHas('fx', function ($query) {
-                $query->where('original_currency', request()->input('filterValue'));
+            'FX Currency' => $this->builder->whereHas('fx', function ($query) use ($filterValue) {
+                $query->where('original_currency', $filterValue);
             }),
             default => $this->builder,
         };
     }
+
+
 }

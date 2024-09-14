@@ -9,6 +9,7 @@
         "babenkoivan/elastic-migrations": "^4.0",
         "babenkoivan/elastic-scout-driver": "^4.0",
         "babenkoivan/elastic-scout-driver-plus": "^5.0",
+        "elasticsearch/elasticsearch": "^8.15",
         "guzzlehttp/guzzle": "^7.2",
         "jerome/filterable": "^1.1",
         "laravel/framework": "^10.10",

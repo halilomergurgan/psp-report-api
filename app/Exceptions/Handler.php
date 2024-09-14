@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Enums\StatusEnum;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
 
@@ -39,5 +40,14 @@ class Handler extends ExceptionHandler
                 'status' => StatusEnum::DECLINED
             ], 401);
         }
+
+        if ($exception instanceof FatalError) {
+            return response()->json([
+                'error' => $exception->getMessage(),
+                'status' => StatusEnum::DECLINED
+            ], 401);
+        }
+
+        return parent::render($request, $exception);
     }
 }
