@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\v3\AuthController;
+use App\Http\Controllers\API\v3\CustomerController;
 use App\Http\Controllers\API\v3\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,5 +25,6 @@ Route::prefix('v3')->group(function () {
         Route::post('transactions/report', [TransactionController::class, 'transactionReport']);
         Route::post('transactions/list', [TransactionController::class, 'transactionList']);
         Route::get('transaction', [TransactionController::class, 'transaction']);
+        Route::get('client ', [CustomerController::class, 'getCustomer']);
     });
 });

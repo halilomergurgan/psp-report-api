@@ -1,32 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Http\Resources;
 
-use Elastic\ScoutDriverPlus\Searchable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class Customer extends Model
+class CustomerResource extends JsonResource
 {
-    use HasFactory, Searchable;
-
-    protected $fillable = [
-        'transaction_id', 'number', 'expiry_month', 'expiry_year', 'email',
-        'billing_first_name', 'billing_last_name', 'billing_address1', 'billing_city',
-        'billing_postcode', 'billing_country', 'shipping_first_name', 'shipping_last_name',
-        'shipping_address1', 'shipping_city', 'shipping_postcode', 'shipping_country'
-    ];
-
     /**
-     * @return BelongsTo
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
      */
-    public function transaction(): BelongsTo
-    {
-        return $this->belongsTo(Transaction::class, 'transaction_id');
-    }
-
-    public function toSearchableArray()
+    public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
@@ -46,8 +32,8 @@ class Customer extends Model
             'shippingCity' => $this->shipping_city,
             'shippingPostcode' => $this->shipping_postcode,
             'shippingCountry' => $this->shipping_country,
-            'created_at' => $this->created_at->toAtomString(),
-            'updated_at' => $this->updated_at->toAtomString(),
+            'created_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 }

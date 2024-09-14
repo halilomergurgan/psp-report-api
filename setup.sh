@@ -81,6 +81,27 @@ echo "Setting up Elasticsearch index and mappings..."
           "original_amount": { "type": "double" },
           "original_currency": { "type": "keyword" }
         }
+      },
+      "customer": {
+        "properties": {
+          "id": { "type": "keyword" },
+          "number": { "type": "keyword" },
+          "expiry_month": { "type": "integer" },
+          "expiry_year": { "type": "integer" },
+          "email": { "type": "keyword" },
+          "billing_first_name": { "type": "keyword" },
+          "billing_last_name": { "type": "keyword" },
+          "billing_address1": { "type": "keyword" },
+          "billing_city": { "type": "keyword" },
+          "billing_postcode": { "type": "keyword" },
+          "billing_country": { "type": "keyword" },
+          "shipping_first_name": { "type": "keyword" },
+          "shipping_last_name": { "type": "keyword" },
+          "shipping_address1": { "type": "keyword" },
+          "shipping_city": { "type": "keyword" },
+          "shipping_postcode": { "type": "keyword" },
+          "shipping_country": { "type": "keyword" }
+        }
       }
     }
   }
@@ -91,6 +112,9 @@ echo "Indexing with Laravel Scout..."
 
 echo "Indexing with Laravel Scout..."
 ./vendor/bin/sail artisan scout:import "App\Models\Transaction"
+
+echo "Indexing with Laravel Scout..."
+./vendor/bin/sail artisan scout:import "App\Models\Customer"
 
 if [ ! -L "public/storage" ]; then
     echo "Linking storage directory..."

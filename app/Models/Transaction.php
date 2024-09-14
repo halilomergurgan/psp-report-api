@@ -85,6 +85,7 @@ class Transaction extends Model
             'reference_no' => $this->reference_no,
             'custom_data' => $this->custom_data,
             'channel' => $this->channel,
+            'customer_id' => $this->customer_id,
             'fx.original_amount' => $this->fx->original_amount,
             'fx.original_currency' => $this->fx->original_currency,
             'created_at' => $this->created_at ? $this->created_at->toAtomString() : null,
