@@ -79,9 +79,16 @@ class Transaction extends Model
             'transaction_id' => $this->transaction_id,
             'merchant_id' => $this->merchant_id,
             'acquirer_id' => $this->acquirer_id,
+            'status' => $this->status,
+            'operation' => $this->operation,
+            'payment_method' => $this->payment_method,
+            'reference_no' => $this->reference_no,
+            'custom_data' => $this->custom_data,
+            'channel' => $this->channel,
             'fx.original_amount' => $this->fx->original_amount,
             'fx.original_currency' => $this->fx->original_currency,
-            'created_at' => $this->created_at->toAtomString(),
+            'created_at' => $this->created_at ? $this->created_at->toAtomString() : null,
+            'updated_at' => $this->updated_at ? $this->updated_at->toAtomString() : null,
         ];
     }
 }

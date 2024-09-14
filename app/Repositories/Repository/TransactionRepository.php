@@ -31,23 +31,7 @@ class TransactionRepository implements TransactionRepositoryInterface
         $fromDate = Carbon::createFromFormat('Y-m-d', $filters['fromDate'])->startOfDay()->toAtomString();
         $toDate = Carbon::createFromFormat('Y-m-d', $filters['toDate'])->endOfDay()->toAtomString();
 
-        $aggs = TransactionAggregationService::getAggregations();
-
-        $params = [
-            'index' => 'transactions',
-            'body' => [
-                'query' => [
-                    'bool' => [
-                        'must' => [
-                            ['range' => ['created_at' => ['gte' => $fromDate, 'lte' => $toDate]]],
-                            ['term' => ['merchant_id' => $filters['merchant']]],
-                            ['term' => ['acquirer_id' => $filters['acquirer']]],
-                        ]
-                    ]
-                ],
-                'aggs' => $aggs
-            ]
-        ];
+        $params = TransactionAggregationService::getTransactionReportAggregation($fromDate, $toDate, $filters['merchant'], $filters['acquirer']);
 
         $response = $this->client->search($params);
 
@@ -76,5 +60,25 @@ class TransactionRepository implements TransactionRepositoryInterface
         $transactions = Transaction::filter($filters)->with(['fx', 'merchant', 'customer', 'acquirer']);
 
         return $transactions->paginate(50);
+    }
+
+    /**
+     * @param string $transactionId
+     * @return Transaction|null
+     * @throws ClientResponseException
+     * @throws ServerResponseException
+     */
+    public function getTransaction(string $transactionId): ?Transaction
+    {
+        $params = TransactionAggregationService::getTransactionAggregation($transactionId);
+
+        $response = $this->client->search($params);
+
+        if (!empty($response['hits']['hits'])) {
+            $transactionData = $response['hits']['hits'][0]['_source'];
+            return new Transaction($transactionData);
+        }
+
+        return null;
     }
 }

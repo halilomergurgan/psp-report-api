@@ -6,6 +6,8 @@ use App\Enums\StatusEnum;
 use App\Filters\TransactionFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionReportRequest;
+use App\Http\Requests\TransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Services\TransactionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -46,5 +48,28 @@ class TransactionController extends Controller
             'status' => StatusEnum::APPROVED,
             'data' => $transactions
         ]);
+    }
+
+    /**
+     * @param TransactionRequest $request
+     * @return JsonResponse
+     */
+    public function transaction(TransactionRequest $request): JsonResponse
+    {
+        $requestData = $request->validated();
+
+        $transaction = $this->transactionService->getTransaction($requestData['transactionId']);
+
+        if ($transaction) {
+            return response()->json([
+                'status' => StatusEnum::APPROVED,
+                'data' =>  new TransactionResource($transaction)
+            ]);
+        } else {
+            return response()->json([
+                'status' => StatusEnum::DECLINED,
+                'message' => 'Transaction not found'
+            ], 404);
+        }
     }
 }

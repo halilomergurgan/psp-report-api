@@ -23,5 +23,6 @@ Route::prefix('v3')->group(function () {
         Route::get('merchant/user/me', [AuthController::class, 'me']);
         Route::post('transactions/report', [TransactionController::class, 'transactionReport']);
         Route::post('transactions/list', [TransactionController::class, 'transactionList']);
+        Route::get('transaction', [TransactionController::class, 'transaction']);
     });
 });

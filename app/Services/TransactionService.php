@@ -31,4 +31,9 @@ class TransactionService
     {
         return $this->transactionRepository->getTransactionList($filters);
     }
+
+    public function getTransaction(string $transactionId)
+    {
+        return $this->transactionRepository->getTransaction($transactionId);
+    }
 }
