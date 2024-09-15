@@ -35,7 +35,7 @@ This script will:
 - Generate the application key.
 - Run database migrations and seeders.
 - Create Elasticsearch indexes
-- Index the data with Laravel Scout:
+- Index the data with Laravel Scout
 
 3. After the setup is complete, the application should be running on http://localhost.
 
