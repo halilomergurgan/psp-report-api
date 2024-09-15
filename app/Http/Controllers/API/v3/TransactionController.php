@@ -5,8 +5,11 @@ namespace App\Http\Controllers\API\v3;
 use App\Enums\StatusEnum;
 use App\Filters\TransactionFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TransactionListRequest;
 use App\Http\Requests\TransactionReportRequest;
 use App\Http\Requests\TransactionRequest;
+use App\Http\Resources\PaginatedResource;
+use App\Http\Resources\TransactionListResource;
 use App\Http\Resources\TransactionResource;
 use App\Services\TransactionService;
 use Illuminate\Http\JsonResponse;
@@ -35,19 +38,16 @@ class TransactionController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param TransactionListRequest $request
      * @return JsonResponse
      */
-    public function transactionList(Request $request): JsonResponse
+    public function transactionList(TransactionListRequest $request): JsonResponse
     {
         $filters = new TransactionFilter($request);
 
         $transactions = $this->transactionService->getTransactionList($filters);
 
-        return response()->json([
-            'status' => StatusEnum::APPROVED,
-            'data' => $transactions
-        ]);
+        return response()->json(new PaginatedResource(TransactionListResource::collection($transactions)));
     }
 
     /**
