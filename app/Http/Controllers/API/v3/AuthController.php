@@ -3,39 +3,44 @@
 namespace App\Http\Controllers\API\v3;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Enums\StatusEnum;
 
 class AuthController extends Controller
 {
+    protected UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
-     * @param Request $request
+     * @param LoginRequest $request
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-        ]);
-
         $credentials = $request->only('email', 'password');
+        $user = $this->userService->authenticate($credentials['email'], $credentials['password']);
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$user) {
             return response()->json([
-                'status' => StatusEnum::DECLINED->value,
+                'status' => StatusEnum::DECLINED,
                 'error' => 'Unauthorized'
             ], 401);
         }
 
+        $token = JWTAuth::fromUser($user);
+
         return response()->json([
             'token' => $token,
-            'status' => StatusEnum::APPROVED->value,
+            'status' => StatusEnum::APPROVED,
         ]);
     }
 
@@ -45,6 +50,16 @@ class AuthController extends Controller
     public function me(): JsonResponse
     {
         return response()->json(auth()->user());
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
+    {
+        auth()->logout();
+
+        return response()->json(['status' => StatusEnum::APPROVED, 'message' => 'Successfully logged out']);
     }
 }
 
