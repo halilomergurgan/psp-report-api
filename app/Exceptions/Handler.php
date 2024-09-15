@@ -48,6 +48,13 @@ class Handler extends ExceptionHandler
             ], 401);
         }
 
+        if ($exception instanceof AuthorizationException) {
+            return response()->json([
+                'error' => $exception->getMessage(),
+                'status' => StatusEnum::DECLINED
+            ], 403);
+        }
+
         return parent::render($request, $exception);
     }
 }

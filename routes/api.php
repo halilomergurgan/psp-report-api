@@ -22,9 +22,9 @@ Route::prefix('v3')->group(function () {
 
     Route::middleware('jwt')->group(function () {
         Route::get('merchant/user/me', [AuthController::class, 'me']);
-        Route::post('merchant/user/logout', [AuthController::class, 'logout']);
-        Route::post('transactions/report', [TransactionController::class, 'transactionReport']);
-        Route::post('transactions/list', [TransactionController::class, 'transactionList']);
+        Route::get('merchant/user/logout', [AuthController::class, 'logout']);
+        Route::get('transactions/report', [TransactionController::class, 'transactionReport']);
+        Route::get('transactions/list', [TransactionController::class, 'transactionList']);
         Route::get('transaction', [TransactionController::class, 'transaction']);
         Route::get('client ', [CustomerController::class, 'getCustomer']);
     });

@@ -27,16 +27,13 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
-        $user = $this->userService->authenticate($credentials['email'], $credentials['password']);
 
-        if (!$user) {
+        if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json([
                 'status' => StatusEnum::DECLINED,
-                'error' => 'Unauthorized'
+                'error' => 'Unauthorized - Invalid credentials'
             ], 401);
         }
-
-        $token = JWTAuth::fromUser($user);
 
         return response()->json([
             'token' => $token,
