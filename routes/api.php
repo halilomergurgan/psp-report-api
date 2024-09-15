@@ -16,16 +16,17 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::middleware('throttle:10,1')->group(function () {
+    Route::prefix('v3')->group(function () {
+        Route::post('merchant/user/login', [AuthController::class, 'login']);
 
-Route::prefix('v3')->group(function () {
-    Route::post('merchant/user/login', [AuthController::class, 'login']);
-
-    Route::middleware('jwt')->group(function () {
-        Route::get('merchant/user/me', [AuthController::class, 'me']);
-        Route::get('merchant/user/logout', [AuthController::class, 'logout']);
-        Route::get('transactions/report', [TransactionController::class, 'transactionReport']);
-        Route::get('transactions/list', [TransactionController::class, 'transactionList']);
-        Route::get('transaction', [TransactionController::class, 'transaction']);
-        Route::get('client ', [CustomerController::class, 'getCustomer']);
+        Route::middleware('jwt')->group(function () {
+            Route::get('merchant/user/me', [AuthController::class, 'me']);
+            Route::get('merchant/user/logout', [AuthController::class, 'logout']);
+            Route::get('transactions/report', [TransactionController::class, 'transactionReport']);
+            Route::get('transactions/list', [TransactionController::class, 'transactionList']);
+            Route::get('transaction', [TransactionController::class, 'transaction']);
+            Route::get('client ', [CustomerController::class, 'getCustomer']);
+        });
     });
 });

@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use App\Enums\StatusEnum;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
@@ -53,6 +55,20 @@ class Handler extends ExceptionHandler
                 'error' => $exception->getMessage(),
                 'status' => StatusEnum::DECLINED
             ], 403);
+        }
+
+        if ($exception instanceof ThrottleRequestsException) {
+            return response()->json([
+                'error' => 'Too many attempts.',
+                'status' => StatusEnum::DECLINED
+            ], 429);
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            return response()->json([
+                'error' => 'The requested resource was not found.',
+                'status' => StatusEnum::DECLINED
+            ], 404);
         }
 
         return parent::render($request, $exception);
